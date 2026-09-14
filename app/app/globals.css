@@ -1,0 +1,382 @@
+/* Tailwind's automatic content detection is turned OFF and the sources are
+   declared explicitly below.
+
+   Automatic detection walks up to the nearest `.git` — the Solana monorepo root
+   two levels above — and scans the whole tree. It normally skips ignored and
+   binary files, but this package sits inside a path the root .gitignore excludes
+   wholesale (`robhinhood_chain_*`), so the nested ignore rules never take
+   effect: `.next/`, `tsconfig.tsbuildinfo` and the Rust/Solidity build
+   artifacts all get read. Tailwind then extracts byte sequences out of those
+   binaries as candidate class names and emits invalid utilities like
+   `.\[app-\:\6\]`, which fails the CSS parse with "Parsing CSS source code
+   failed".
+
+   That failure is intermittent by nature — it appears only once `.next/` has
+   been populated — so scoping the scan (`source("../")`) was not enough; the
+   artifacts live inside `app/` too. Listing the source directories is the only
+   form that cannot be poisoned by a generated file.
+
+   Keep this list in sync when adding a top-level directory that contains
+   classes. `hooks/` and `scripts/` are intentionally absent — neither
+   references a class name. */
+@import "tailwindcss" source(none);
+@source "./**/*.{ts,tsx}";
+@source "../components/**/*.{ts,tsx}";
+@source "../lib/**/*.{ts,tsx}";
+
+/* ---------------------------------------------------------------------------
+   Blop — terminal/on-chain design language.
+
+   Warm near-black ground, cream foreground, a single amber accent, hairline
+   rules instead of cards. Nothing glows; nothing is glass. Depth comes from
+   type scale and 1px lines, the way a ledger does.
+--------------------------------------------------------------------------- */
+
+:root {
+  --background: #0b0a09;
+  --surface: #100e0c;
+  --surface-2: #171410;
+  --foreground: #e9e5dc;
+  --muted: #8b8378;
+  --faint: #5c564e;
+
+  --border: rgba(233, 229, 220, 0.1);
+  --border-strong: rgba(233, 229, 220, 0.24);
+
+  --accent: #d99a3a;
+  --accent-2: #f0bd6b;
+  --neon: #5fbf8f;
+  --danger: #d15b4e;
+  --warn: #d99a3a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-neon: var(--neon);
+  --color-danger: var(--danger);
+  --color-warn: var(--warn);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  /* Corners are near-square across the app. Redefining the radius scale here
+     retunes every existing `rounded-*` utility at once, so component markup
+     keeps its familiar class names. `rounded-full` is untouched (Tailwind
+     computes it from infinity, not from the scale) and still rounds status
+     dots and pills. */
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 3px;
+  --radius-2xl: 3px;
+  --radius-3xl: 4px;
+  --radius-4xl: 6px;
+}
+
+html,
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), system-ui, -apple-system, "Segoe UI",
+    Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: rgba(217, 154, 58, 0.3);
+  color: var(--foreground);
+}
+
+/* --- Surfaces -------------------------------------------------------------
+   `glass` / `glass-strong` keep their names but no longer blur or float —
+   they are a flat panel and a hairline. */
+
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+}
+
+.glass-strong {
+  background: var(--surface-2);
+  border: 1px solid var(--border-strong);
+}
+
+.glow-ring {
+  box-shadow: none;
+}
+
+/* Headings sit flat in cream; the old gradient fill is now a no-op so shared
+   components read correctly without edits. */
+.gradient-text {
+  background: none;
+  -webkit-background-clip: border-box;
+  background-clip: border-box;
+  color: var(--foreground);
+  letter-spacing: -0.02em;
+}
+
+.subtle-grid {
+  background-image:
+    linear-gradient(rgba(233, 229, 220, 0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(233, 229, 220, 0.028) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(
+    ellipse 75% 65% at 50% 15%,
+    #000 20%,
+    transparent 85%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 75% 65% at 50% 15%,
+    #000 20%,
+    transparent 85%
+  );
+}
+
+/* Full-bleed hairline that separates one section band from the next. */
+.rule-top {
+  border-top: 1px solid var(--border);
+}
+
+.tick-line {
+  background: linear-gradient(90deg, transparent, var(--border-strong), transparent);
+}
+
+/* --- Type ----------------------------------------------------------------- */
+
+.label-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 10px;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.index-mono {
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Controls -------------------------------------------------------------
+   Buttons are cream-on-black or a hairline outline. The only motion is the
+   background swap. */
+
+.btn-primary {
+  background: var(--foreground);
+  color: #0b0a09;
+  border: 1px solid var(--foreground);
+  font-weight: 500;
+  box-shadow: none;
+  transition: background 140ms ease, color 140ms ease, border-color 140ms ease;
+}
+
+.btn-primary:hover {
+  background: transparent;
+  color: var(--foreground);
+  border-color: var(--foreground);
+}
+
+/* A disabled primary must not read as the loudest thing on the page. Call
+   sites also apply `opacity-50`, so this stays legible rather than vanishing. */
+.btn-primary:disabled,
+.btn-primary:disabled:hover {
+  background: var(--surface-2);
+  color: var(--faint);
+  border-color: var(--border);
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--foreground);
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+}
+
+.btn-ghost:hover {
+  background: rgba(233, 229, 220, 0.05);
+  border-color: var(--foreground);
+}
+
+/* --- Row list -------------------------------------------------------------
+   The ledger pattern: rows split by hairlines, the whole row lighting on
+   hover rather than lifting. */
+
+.ledger-row {
+  border-top: 1px solid var(--border);
+  transition: background 140ms ease;
+}
+
+.ledger-row:hover {
+  background: rgba(233, 229, 220, 0.025);
+}
+
+/* --- Motion ---------------------------------------------------------------
+   Legacy animation names kept so untouched components keep working; the
+   float/glow ones are quieted to match the flat treatment. */
+
+@keyframes float-slow {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50% { transform: translate3d(0, -4px, 0); }
+}
+
+@keyframes pulse-ring {
+  0% { transform: scale(0.9); opacity: 0.5; }
+  70% { transform: scale(1.6); opacity: 0; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+@keyframes spin-slow {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+@keyframes caret-blink {
+  0%, 49% { opacity: 1; }
+  50%, 100% { opacity: 0; }
+}
+
+.animate-float-slow { animation: float-slow 7s ease-in-out infinite; }
+.animate-pulse-ring { animation: pulse-ring 2.6s cubic-bezier(0.22, 1, 0.36, 1) infinite; }
+.animate-spin-slow { animation: spin-slow 40s linear infinite; }
+
+.animate-shimmer {
+  background: linear-gradient(
+    90deg,
+    rgba(233, 229, 220, 0) 0%,
+    rgba(233, 229, 220, 0.1) 50%,
+    rgba(233, 229, 220, 0) 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 3s linear infinite;
+}
+
+.caret::after {
+  content: "_";
+  margin-left: 1px;
+  animation: caret-blink 1.1s step-end infinite;
+  color: var(--accent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-float-slow,
+  .animate-pulse-ring,
+  .animate-spin-slow,
+  .animate-shimmer,
+  .caret::after {
+    animation: none;
+  }
+}
+
+/* --- Scrollbar ------------------------------------------------------------ */
+
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-track { background: var(--background); }
+::-webkit-scrollbar-thumb { background: #24201b; }
+::-webkit-scrollbar-thumb:hover { background: #322c25; }
+
+/* --- Wallet adapter override ----------------------------------------------
+   The adapter ships a purple gradient pill and a charcoal dropdown. Its own
+   stylesheet is imported from `providers.tsx` (it contains an `@import` of a
+   web font, so it cannot be inlined here) — hence `!important` throughout,
+   which is what actually decides these rather than source order. */
+
+.wallet-adapter-button-trigger {
+  background: transparent !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 2px !important;
+  color: var(--foreground) !important;
+  font-family: var(--font-geist-mono), ui-monospace, monospace !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  height: 36px !important;
+  letter-spacing: 0.02em;
+}
+
+.wallet-adapter-button-trigger:not([disabled]):hover {
+  background: rgba(233, 229, 220, 0.05) !important;
+  border-color: var(--foreground) !important;
+}
+
+/* The dropdown, the picker modal and the wallet list all ship their own
+   purple-on-charcoal treatment; restate each surface as a hairline panel. */
+
+.wallet-adapter-dropdown-list,
+.wallet-adapter-modal-wrapper {
+  background: var(--surface) !important;
+  border: 1px solid var(--border-strong) !important;
+  border-radius: 2px !important;
+  box-shadow: none !important;
+  font-family: var(--font-geist-mono), ui-monospace, monospace !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  background: transparent !important;
+  border-radius: 0 !important;
+  color: var(--muted) !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  /* The adapter centres its menu items; a menu reads as a list, not a stack
+     of buttons. */
+  height: 34px !important;
+  justify-content: flex-start !important;
+  padding: 0 14px !important;
+}
+
+.wallet-adapter-dropdown-list-item:not([disabled]):hover {
+  background: rgba(233, 229, 220, 0.05) !important;
+  color: var(--foreground) !important;
+}
+
+.wallet-adapter-modal-title {
+  color: var(--foreground) !important;
+  font-family: var(--font-geist-sans), system-ui, sans-serif !important;
+  font-size: 20px !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.01em;
+}
+
+.wallet-adapter-modal-list .wallet-adapter-button {
+  background: transparent !important;
+  border-top: 1px solid var(--border) !important;
+  border-radius: 0 !important;
+  color: var(--foreground) !important;
+  font-size: 13px !important;
+  font-weight: 400 !important;
+}
+
+.wallet-adapter-modal-list .wallet-adapter-button:not([disabled]):hover {
+  background: rgba(233, 229, 220, 0.05) !important;
+}
+
+.wallet-adapter-modal-list-more,
+.wallet-adapter-modal-button-close {
+  background: transparent !important;
+  border-radius: 0 !important;
+  color: var(--muted) !important;
+}
+
+.wallet-adapter-modal-button-close:hover {
+  color: var(--foreground) !important;
+}
+
+.wallet-adapter-modal-overlay {
+  background: rgba(0, 0, 0, 0.75) !important;
+}
