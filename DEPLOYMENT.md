@@ -33,7 +33,7 @@ export PATH="$HOME/.foundry/bin:$PATH"     # add to ~/.zshrc
 One command sets up the whole local chain:
 
 ```bash
-cd robhinhood_chain_comperitable/contracts
+cd contracts                        # from the repo root
 ./script/anvil-dev.sh
 ```
 
@@ -118,7 +118,7 @@ cast wallet list
 ### Deploy
 
 ```bash
-cd robhinhood_chain_comperitable/contracts
+cd contracts                     # from the repo root
 forge test                       # 140 tests must pass before you deploy
 
 forge script script/Deploy.s.sol:Deploy \
@@ -228,7 +228,7 @@ browser.
 
 ## 5. Before mainnet
 
-- [ ] `forge test` green (140 tests, 10 invariants)
+- [ ] `forge test` green (140 tests, 11 invariants)
 - [ ] `cd app && npm run verify` green (typecheck, lint, dependency audit)
 - [ ] Security review completed — **not yet done**; phases 17–19 of the
       migration plan (security review, gas optimisation, deployment hardening)

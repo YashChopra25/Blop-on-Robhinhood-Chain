@@ -177,7 +177,7 @@ confirmation count per action taken from one table, not scattered.
 ## 7. Deployment runbook
 
 ```bash
-cd robhinhood_chain_comperitable/contracts
+cd contracts   # from the repo root
 
 # ---- local ----
 anvil &

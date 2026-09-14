@@ -6,7 +6,7 @@ worked before moving on.
 For the reference version — full env table, pre-mainnet checklist, background on
 *why* each piece is needed — see [`DEPLOYMENT.md`](./DEPLOYMENT.md).
 
-All paths are relative to `robhinhood_chain_comperitable/`.
+All paths are relative to the repository root.
 
 ---
 

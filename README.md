@@ -120,7 +120,7 @@ dev account. See [DEPLOYMENT.md](./DEPLOYMENT.md#1-local-development-anvil) for 
 
 ```bash
 cd contracts
-forge test                 # unit + fuzz + invariant (140 tests, 10 invariants)
+forge test                 # unit + fuzz + invariant (140 tests, 11 invariants)
 forge test --gas-report
 
 cd ../app
