@@ -1,0 +1,10 @@
+{
+  "network": "Robinhood Chain Testnet",
+  "chainId": 46630,
+  "contract": "VaultInheritance",
+  "address": "0x87279BFB3BD7f1d4338bB860612a96a1D9A67cF3",
+  "deployer": "0x1804c8AB1F12E6bbf3894d4083f33e07309d1f38",
+  "blockNumber": 11701992,
+  "timestamp": 1789377761,
+  "explorerUrl": "https://explorer.testnet.chain.robinhood.com/address/0x87279BFB3BD7f1d4338bB860612a96a1D9A67cF3"
+}

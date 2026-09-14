@@ -1,0 +1,48 @@
+{
+  "_comment": "Single source of truth for every network value. Verified 2026-09-12 against the official docs at docs.robinhood.com/chain AND against the live RPC endpoints (eth_chainId). See ROBINHOOD_CHAIN.md. Do not hardcode any of these anywhere else.",
+  "networks": {
+    "anvil": {
+      "name": "Anvil (local)",
+      "chainId": 31337,
+      "rpcUrl": "http://127.0.0.1:8545",
+      "wsUrl": "ws://127.0.0.1:8545",
+      "explorerUrl": null,
+      "verifier": null,
+      "faucetUrl": null,
+      "nativeCurrency": {"name": "Ether", "symbol": "ETH", "decimals": 18},
+      "testnet": true
+    },
+    "robinhoodTestnet": {
+      "name": "Robinhood Chain Testnet",
+      "chainId": 46630,
+      "rpcUrl": "https://rpc.testnet.chain.robinhood.com",
+      "wsUrl": "wss://feed.testnet.chain.robinhood.com",
+      "explorerUrl": "https://explorer.testnet.chain.robinhood.com",
+      "verifier": {
+        "type": "blockscout",
+        "url": "https://explorer.testnet.chain.robinhood.com/api/",
+        "apiKeyRequired": false,
+        "_note": "Derived: the testnet explorer runs Blockscout (backend v10.2.6, probed 2026-09-12) and Blockscout always serves its verification API at /api/. The official docs spell out only the mainnet verifier URL."
+      },
+      "faucetUrl": "https://faucet.testnet.chain.robinhood.com/",
+      "nativeCurrency": {"name": "Ether", "symbol": "ETH", "decimals": 18},
+      "testnet": true
+    },
+    "robinhood": {
+      "name": "Robinhood Chain",
+      "chainId": 4663,
+      "rpcUrl": "https://rpc.mainnet.chain.robinhood.com",
+      "wsUrl": "wss://feed.mainnet.chain.robinhood.com",
+      "explorerUrl": "https://robinhoodchain.blockscout.com",
+      "verifier": {
+        "type": "blockscout",
+        "url": "https://robinhoodchain.blockscout.com/api/",
+        "apiKeyRequired": false,
+        "_note": "Documented verbatim at docs.robinhood.com/chain/deploy-smart-contracts"
+      },
+      "faucetUrl": null,
+      "nativeCurrency": {"name": "Ether", "symbol": "ETH", "decimals": 18},
+      "testnet": false
+    }
+  }
+}
