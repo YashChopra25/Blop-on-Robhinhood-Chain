@@ -53,6 +53,18 @@ Key design properties:
 
 ---
 
+## Documentation
+
+Full documentation lives in [`docs/`](./docs/README.md):
+
+- [Overview](./docs/overview.md) — concepts, roles, lifecycle, glossary
+- [User guide](./docs/user-guide.md) — using the dashboard as an owner, custodian or heir
+- [Smart contract reference](./docs/smart-contract-reference.md) — functions, events, errors
+- [Frontend guide](./docs/frontend.md) — app architecture and data flow
+- [Testing](./docs/testing.md) · [Security](./docs/security.md)
+
+---
+
 ## Repository layout
 
 ```
@@ -78,8 +90,6 @@ Key design properties:
 ├── DEPLOYMENT.md                reference deployment guide
 ├── step_depl.md                 step-by-step deployment walkthrough
 ├── ROBINHOOD_CHAIN.md           verified network facts
-├── MIGRATION_ANALYSIS.md        business rules of the Solana original
-├── EVM_MIGRATION_DESIGN.md      Solana → EVM concept mapping
 └── SOLIDITY_ARCHITECTURE.md     contract, storage and access-control design
 ```
 
